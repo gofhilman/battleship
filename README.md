@@ -1,2 +1,3 @@
-# frontend-template
-This is a template for basic package configurations.
+# Battleship Game
+
+A web-based battleship game with TDD practices

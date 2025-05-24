@@ -23,7 +23,8 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "modern-normalize": "^3.0.1"
+    "modern-normalize": "^3.0.1",
+    "pubsub-js": "^1.9.5"
   },
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
