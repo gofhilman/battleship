@@ -52,22 +52,24 @@ describe("isValidShip and placeShip", () => {
 });
 
 describe("receiveAttack", () => {
-  test("cannot attack the same grid element")
   test("not hitting ship", () => {
-    gameboard.receiveAttack([0, 0]);
+    const attacked = gameboard.receiveAttack([0, 0]);
+    expect(attacked).toBe(true);
     const refGrid = new Gameboard().grid;
     refGrid[0][0].mark = "miss";
     expect(gameboard.grid).toEqual(refGrid);
   });
 
-  test("hitting ship", () => {
+  test("hitting ship without sinking it", () => {
     gameboard.placeShip(ship, "horizontal", [0, 0]);
-    gameboard.receiveAttack([0,1]);
+    const attacked = gameboard.receiveAttack([0,1]);
+    expect(attacked).toBe(true);
     expect(ship.hits).toBe(1);
-    const refGrid = new Gameboard().grid;
-    refGrid.placeShip(ship, "horizontal", [0, 0]);
-    refGrid[0][1].mark = "hit";
-    expect(gameboard.grid).toEqual(refGrid);
+    expect(ship.sunk).toBe(false);
+    const refBoard = new Gameboard();
+    refBoard.placeShip(ship, "horizontal", [0, 0]);
+    refBoard.grid[0][1].mark = "hit";
+    expect(gameboard.grid).toEqual(refBoard.grid);
   });
 
   test("hitting ship and sinking it", () => {
@@ -80,11 +82,20 @@ describe("receiveAttack", () => {
     const refShip = new Ship(3);
     refShip.hits = 3;
     refShip.sunk = true;
-    const refGrid = new Gameboard().grid;
-    refGrid.placeShip(refShip, "horizontal", [0, 0]);
+    const refBoard = new Gameboard();
+    refBoard.placeShip(refShip, "horizontal", [0, 0]);
     for(let attackIter = 0; attackIter < 3; attackIter++) {
-      refGrid[0][attackIter].mark = "hit";
+      refBoard.grid[0][attackIter].mark = "hit";
     }
+    expect(gameboard.grid).toEqual(refBoard.grid);
+  });
+
+  test("cannot attack the same grid element", () => {
+    gameboard.receiveAttack([0, 0]);
+    const secondAttack = gameboard.receiveAttack([0, 0]);
+    expect(secondAttack).toBe(false);
+    const refGrid = new Gameboard().grid;
+    refGrid[0][0].mark = "miss";
     expect(gameboard.grid).toEqual(refGrid);
   });
 });

@@ -9,8 +9,8 @@ class GridElement {
   }
 
   markElement() {
-    if(this.ship) this.mark = "hit";
-    else this.mark = "miss";
+    if(this.ship) return this.mark = "hit";
+    else return this.mark = "miss";
   }
 }
 

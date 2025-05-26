@@ -11,11 +11,11 @@ test("constructShip", () => {
 describe("markElement", () => {
   test("if there is a ship", () => {
     gridElement.constructShip("ship");
-    gridElement.markElement();
+    expect(gridElement.markElement()).toBe("hit");
     expect(gridElement.mark).toBe("hit");
   });
   test("if there is no ship", () => {
-    gridElement.markElement();
+    expect(gridElement.markElement()).toBe("miss");
     expect(gridElement.mark).toBe("miss");
   });
 });

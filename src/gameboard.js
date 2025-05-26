@@ -15,11 +15,22 @@ class Gameboard {
   }
 
   receiveAttack(coordinate) {
-    // this.grid[coordinate[0]][coordinate[1]].markElement();
+    if(this.grid[coordinate[0]][coordinate[1]].mark !== null) return false;
+    const attack = this.grid[coordinate[0]][coordinate[1]].markElement();
+    if(attack === "hit") {
+      this.grid[coordinate[0]][coordinate[1]].ship.hit();
+      this.grid[coordinate[0]][coordinate[1]].ship.isSunk();
+    }
+    return true;
   }
 
   isGameOver() {
-
+    let sunkShipCounter = 0
+    this.ships.forEach(ship => {
+      if(ship.sunk) sunkShipCounter++;
+    });
+    if(sunkShipCounter === 5) return true;
+    else return false;
   }
 
   isValidPos(shipLength, orientation, position) {
