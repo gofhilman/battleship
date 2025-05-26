@@ -14,11 +14,11 @@ class Gameboard {
     this.processPlacing(ship, orientation, position);
   }
 
-  receiveAttack() {
-
+  receiveAttack(coordinate) {
+    // this.grid[coordinate[0]][coordinate[1]].markElement();
   }
 
-  recordMiss() {
+  isGameOver() {
 
   }
 
@@ -48,8 +48,5 @@ class Gameboard {
     return ship;
   }
 }
-
-const gameboard = new Gameboard();
-console.log(gameboard.grid);
 
 export default Gameboard;

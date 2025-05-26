@@ -1,8 +1,11 @@
 import Gameboard from "../src/gameboard";
+import Ship from "../src/ship";
 
-let gameboard;
-const ship = { length: 3 };
-beforeEach(() => gameboard = new Gameboard());
+let gameboard, ship;
+beforeEach(() => {
+  gameboard = new Gameboard();
+  ship = new Ship(3);
+});
 
 describe("isValidShip and placeShip", () => {
   test("horizontal ship that can be put on the grid", () => {
@@ -36,7 +39,7 @@ describe("isValidShip and placeShip", () => {
   });
 
   test("ships that cannot overlap", () => {
-    gameboard.placeShip(ship, "horizontal", [0,3]);
+    gameboard.placeShip(ship, "horizontal", [0, 3]);
     expect(gameboard.isValidPos(ship.length, "vertical", [0, 4])).toBe(false);
     gameboard.placeShip(ship, "vertical", [0, 4]);
     expect(gameboard.ships).toEqual([ship]);
@@ -46,5 +49,42 @@ describe("isValidShip and placeShip", () => {
     }
     expect(gameboard.grid).toEqual(finalGrid);
   });
+});
 
+describe("receiveAttack", () => {
+  test("cannot attack the same grid element")
+  test("not hitting ship", () => {
+    gameboard.receiveAttack([0, 0]);
+    const refGrid = new Gameboard().grid;
+    refGrid[0][0].mark = "miss";
+    expect(gameboard.grid).toEqual(refGrid);
+  });
+
+  test("hitting ship", () => {
+    gameboard.placeShip(ship, "horizontal", [0, 0]);
+    gameboard.receiveAttack([0,1]);
+    expect(ship.hits).toBe(1);
+    const refGrid = new Gameboard().grid;
+    refGrid.placeShip(ship, "horizontal", [0, 0]);
+    refGrid[0][1].mark = "hit";
+    expect(gameboard.grid).toEqual(refGrid);
+  });
+
+  test("hitting ship and sinking it", () => {
+    gameboard.placeShip(ship, "horizontal", [0, 0]);
+    for(let attackIter = 0; attackIter < 3; attackIter++) {
+      gameboard.receiveAttack([0,attackIter]);
+    }
+    expect(ship.hits).toBe(3);
+    expect(ship.sunk).toBe(true);
+    const refShip = new Ship(3);
+    refShip.hits = 3;
+    refShip.sunk = true;
+    const refGrid = new Gameboard().grid;
+    refGrid.placeShip(refShip, "horizontal", [0, 0]);
+    for(let attackIter = 0; attackIter < 3; attackIter++) {
+      refGrid[0][attackIter].mark = "hit";
+    }
+    expect(gameboard.grid).toEqual(refGrid);
+  });
 });
