@@ -1,13 +1,17 @@
+import GridElement from "./grid-element.js";
+
 class Gameboard {
   constructor() {
-    this.grid = Array.from({ length: 10 }, () => Array(10).fill(null));
+    this.grid = Array.from({ length: 10 }, () => {
+      return Array(10).fill(null).map(() => new GridElement)
+    });
     this.ships = [];
   }
 
   placeShip(ship, orientation, position) {
-    if(!this.isValidPos(ship.length, orientation, position)) return null;
+    if(!this.isValidPos(ship.length, orientation, position)) return;
     this.ships.push(ship);
-    return this.processPlacing(ship, orientation, position);
+    this.processPlacing(ship, orientation, position);
   }
 
   receiveAttack() {
@@ -19,23 +23,33 @@ class Gameboard {
   }
 
   isValidPos(shipLength, orientation, position) {
-    const gridPart = (orientation === "horizontal") ? 1 : 0;
-    for(let invalidIndex = 9; invalidIndex > 10 - shipLength; invalidIndex--) {
-      if(invalidIndex === position[gridPart]) return false;
+    for (let placingIter = 0; placingIter < shipLength; placingIter++) {
+      if(orientation === "horizontal" && 
+        (!this.grid[position[0]][position[1] + placingIter] ||
+          this.grid[position[0]][position[1] + placingIter].ship !== null)) {
+        return false;
+      } else if(orientation === "vertical" &&
+        (!this.grid[position[0] + placingIter][position[1]] ||
+          this.grid[position[0] + placingIter][position[1]].ship !== null)) {
+        return false;
+      }
     }
-    return true;
+    return true;    
   }
 
   processPlacing(ship, orientation, position) {
     for (let placingIter = 0; placingIter < ship.length; placingIter++) {
       if(orientation === "horizontal") {
-        this.grid[position[0]][position[1] + placingIter] = ship;
+        this.grid[position[0]][position[1] + placingIter].constructShip(ship);
       } else if(orientation === "vertical") {
-        this.grid[position[0] + placingIter][position[1]] = ship;
+        this.grid[position[0] + placingIter][position[1]].constructShip(ship);
       }
     }
     return ship;
   }
 }
+
+const gameboard = new Gameboard();
+console.log(gameboard.grid);
 
 export default Gameboard;
