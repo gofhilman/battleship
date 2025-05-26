@@ -1,6 +1,8 @@
 import Ship from "../src/ship";
 
-const ship = new Ship(3);
+let ship;
+
+beforeEach(() => ship = new Ship(3));
 
 test("hit()", () => {
   ship.hits = 1;
