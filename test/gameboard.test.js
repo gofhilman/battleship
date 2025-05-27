@@ -51,10 +51,10 @@ describe("isValidShip and placeShip", () => {
   });
 });
 
-describe("receiveAttack", () => {
+describe("isAttacked and receiveAttack", () => {
   test("not hitting ship", () => {
-    const attacked = gameboard.receiveAttack([0, 0]);
-    expect(attacked).toBe(true);
+    expect(gameboard.isAttacked([0, 0])).toBe(true);
+    gameboard.receiveAttack([0, 0]);
     const refGrid = new Gameboard().grid;
     refGrid[0][0].mark = "miss";
     expect(gameboard.grid).toEqual(refGrid);
@@ -62,8 +62,8 @@ describe("receiveAttack", () => {
 
   test("hitting ship without sinking it", () => {
     gameboard.placeShip(ship, "horizontal", [0, 0]);
-    const attacked = gameboard.receiveAttack([0,1]);
-    expect(attacked).toBe(true);
+    expect(gameboard.isAttacked([0, 1])).toBe(true);
+    gameboard.receiveAttack([0, 1]);
     expect(ship.hits).toBe(1);
     expect(ship.sunk).toBe(false);
     const refBoard = new Gameboard();
@@ -91,9 +91,9 @@ describe("receiveAttack", () => {
   });
 
   test("cannot attack the same grid element", () => {
+    gameboard.receiveAttack([0, 0]);   
+    expect(gameboard.isAttacked([0, 0])).toBe(false);
     gameboard.receiveAttack([0, 0]);
-    const secondAttack = gameboard.receiveAttack([0, 0]);
-    expect(secondAttack).toBe(false);
     const refGrid = new Gameboard().grid;
     refGrid[0][0].mark = "miss";
     expect(gameboard.grid).toEqual(refGrid);

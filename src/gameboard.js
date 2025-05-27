@@ -15,13 +15,12 @@ class Gameboard {
   }
 
   receiveAttack(coordinate) {
-    if(this.grid[coordinate[0]][coordinate[1]].mark !== null) return false;
+    if(!this.isAttacked(coordinate)) return;
     const attack = this.grid[coordinate[0]][coordinate[1]].markElement();
     if(attack === "hit") {
       this.grid[coordinate[0]][coordinate[1]].ship.hit();
       this.grid[coordinate[0]][coordinate[1]].ship.isSunk();
     }
-    return true;
   }
 
   isGameOver() {
@@ -57,6 +56,11 @@ class Gameboard {
       }
     }
     return ship;
+  }
+
+  isAttacked(coordinate) {
+    if(this.grid[coordinate[0]][coordinate[1]].mark !== null) return false;
+    return true;
   }
 }
 
