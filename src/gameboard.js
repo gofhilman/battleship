@@ -40,7 +40,7 @@ class Gameboard {
           this.grid[position[0]][position[1] + placingIter].ship !== null)) {
         return false;
       } else if(orientation === "vertical" &&
-        (!this.grid[position[0] + placingIter][position[1]] ||
+        (!this.grid[position[0] + placingIter] ||
           this.grid[position[0] + placingIter][position[1]].ship !== null)) {
         return false;
       }
