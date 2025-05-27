@@ -31,11 +31,17 @@ class Player {
     }
   }
 
-  receiveAttackRandomly() {
-    let attack;
-    while(!attack) {
-      attack = this.gameboard.receiveAttack(this.randomizePosition());
+  attack(opponentBoard, coordinate) {
+    if (!this.canAttack(opponentBoard, coordinate)) return;
+    opponentBoard.receiveAttack(coordinate);
+  }
+
+  attackRandomly(opponentBoard) {
+    let randomCoordinate = this.randomizePosition();
+    while(!this.canAttack(opponentBoard, randomCoordinate)) {
+      randomCoordinate = this.randomizePosition();
     }
+    this.attack(opponentBoard, randomCoordinate);
   }
 
   randomizeOrientation() {
@@ -45,6 +51,10 @@ class Player {
 
   randomizePosition() {
     return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+  }
+
+  canAttack(opponentBoard, coordinate) {
+    return opponentBoard.isAttacked(coordinate);
   }
 }
 
