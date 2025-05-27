@@ -12,8 +12,8 @@ class Player {
     const shipLengths = [5, 4, 3, 3, 2];
     let shipIter = 0;
     while (shipIter < 5) {
-      const randomOrientation = this.randomizeShipOrientation();
-      const randomPosition = this.randomizeShipPosition();
+      const randomOrientation = this.randomizeOrientation();
+      const randomPosition = this.randomizePosition();
       if (
         this.gameboard.isValidPos(
           shipLengths[shipIter],
@@ -31,12 +31,19 @@ class Player {
     }
   }
 
-  randomizeShipOrientation() {
+  receiveAttackRandomly() {
+    let attack;
+    while(!attack) {
+      attack = this.gameboard.receiveAttack(this.randomizePosition());
+    }
+  }
+
+  randomizeOrientation() {
     if (Math.random() < 0.5) return "horizontal";
     return "vertical";
   }
 
-  randomizeShipPosition() {
+  randomizePosition() {
     return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
   }
 }
