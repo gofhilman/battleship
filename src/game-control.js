@@ -14,10 +14,9 @@ class GameControl {
       new Player(
         opponentType === "computer" ? "Computer" : "Player 2",
         opponentType
-      ),
-    ); 
-    console.log(this.players); // Test   
-  }  
+      )
+    );
+  }
 }
 
 export default GameControl;
