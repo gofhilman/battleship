@@ -12,115 +12,40 @@
     </header>
     <main>
       <dialog id="game-setting">
-        <form action="">
-          <h1>Game Setting</h1>
-          <p>Opponent type</p>
-          <div class="form-body">
-            <div>
-              <input
-                type="radio"
-                name="opponent-type"
-                id="computer"
-                value="computer"
-                checked
-              />
-              <label for="computer">Computer</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="opponent-type"
-                id="human"
-                value="human"
-              />
-              <label for="human">Human</label>
-            </div>
+        <h1>Game Setting</h1>
+        <p>Opponent type</p>
+        <div class="form-body">
+          <div>
+            <input
+              type="radio"
+              name="opponent-type"
+              id="computer"
+              value="computer"
+              checked
+            />
+            <label for="computer">Computer</label>
           </div>
-          <div class="confirm">
-            <button class="confirm-button" id="confirm-setting">Confirm</button>
+          <div>
+            <input type="radio" name="opponent-type" id="human" value="human" />
+            <label for="human">Human</label>
           </div>
-        </form>
+        </div>
+        <button class="confirm-button" id="confirm-setting">Confirm</button>
       </dialog>
-      <dialog>
+      <dialog id="game-setup">
         <h1 id="player-name"></h1>
         <p>Place your ships</p>
         <div id="setup">
           <div id="dock">
-            <div id="instruction">Choose the orientations</div>
-            <div class="docked-ship">
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-            </div>
-            <img
-              src="./assets/arrow-left-right-bold.svg"
-              alt="horizontal"
-              class="horizontal"
-            /><img
-              src="./assets/arrow-up-down-bold.svg"
-              alt="vertical"
-              class="vertical"
-            />
-            <div class="docked-ship">
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-            </div>
-            <img
-              src="./assets/arrow-left-right-bold.svg"
-              alt="horizontal"
-              class="horizontal"
-            /><img
-              src="./assets/arrow-up-down-bold.svg"
-              alt="vertical"
-              class="vertical"
-            />
-            <div class="docked-ship">
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-            </div>
-            <img
-              src="./assets/arrow-left-right-bold.svg"
-              alt="horizontal"
-              class="horizontal"
-            /><img
-              src="./assets/arrow-up-down-bold.svg"
-              alt="vertical"
-              class="vertical"
-            />
-            <div class="docked-ship">
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-            </div>
-            <img
-              src="./assets/arrow-left-right-bold.svg"
-              alt="horizontal"
-              class="horizontal"
-            /><img
-              src="./assets/arrow-up-down-bold.svg"
-              alt="vertical"
-              class="vertical"
-            />
-            <div class="docked-ship">
-              <div class="ship-element"></div>
-              <div class="ship-element"></div>
-            </div>
-            <img
-              src="./assets/arrow-left-right-bold.svg"
-              alt="horizontal"
-              class="horizontal"
-            /><img
-              src="./assets/arrow-up-down-bold.svg"
-              alt="vertical"
-              class="vertical"
-            />
+            <div>Choose the orientations</div>
+            <!-- docked ship table placeholder -->
           </div>
+          <div class="grid">
+            <!-- 100 grid child placeholder -->
+          </div>
+          <button id="randomize">Randomize</button>
         </div>
+        <button class="confirm-button" id="confirm-setup">Confirm</button>
       </dialog>
       <dialog></dialog>
       <dialog></dialog>
