@@ -104,6 +104,17 @@ dialog[open] {
   align-items: center;
 }
 
+dialog h1 {
+  color: var(--main-color);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+dialog p {
+  font-size: 1.15rem;
+}
+
 input[type="radio"] {
   accent-color: var(--main-color);
 }
@@ -138,17 +149,6 @@ input:focus {
   width: 350px;
 }
 
-#game-setting h1 {
-  color: var(--main-color);
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-#game-setting p {
-  font-size: 1.15rem;
-}
-
 .form-body {
   margin: 3px 0 15px 0;
   display: flex;
@@ -163,6 +163,56 @@ input:focus {
 .form-body input,
 .form-body label {
   cursor: pointer;
+}
+
+#setup {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+}
+
+#dock {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-items: center;
+  align-items: center;
+  gap: 10px 5px;
+}
+
+#dock > div:first-child {
+  grid-column: 1 / 4;
+}
+
+.docked-ship {
+  display: flex;
+}
+
+.ship-element {
+  border: 2px solid var(--main-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+}
+
+.horizontal, .vertical {
+  width: 40px;
+  filter: invert(100%) brightness(1000%);
+}
+
+#setup-grid {
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  grid-template-rows: repeat(10, max-content);
+}
+
+.grid-element {
+  border: 1px solid white;
+  width: 40px;
+  height: 40px;
+}
+
+#randomize {
+  grid-column: 2;
 }
 
 footer {

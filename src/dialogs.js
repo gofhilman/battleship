@@ -44,17 +44,18 @@ function displaySetup(player) {
     Object.assign(horizontal, {
       src: horizontalIcon,
       alt: "horizontal",
-      class: "horizontal",
+      className: "horizontal",
     });
     Object.assign(vertical, {
       src: verticalIcon,
       alt: "vertical",
-      class: "vertical",
+      className: "vertical",
     });
     dock.append(dockedShip, horizontal, vertical);
   });
   for(let elementIter = 0; elementIter < 100; elementIter++) {
     const gridElement = document.createElement("div");
+    gridElement.classList.add("grid-element");
     setupGrid.appendChild(gridElement);
   }
 
