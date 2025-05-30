@@ -111,10 +111,6 @@ dialog h1 {
   margin-bottom: 10px;
 }
 
-dialog p {
-  font-size: 1.15rem;
-}
-
 input[type="radio"] {
   accent-color: var(--main-color);
 }
@@ -149,6 +145,10 @@ input:focus {
   width: 350px;
 }
 
+#game-setting p {
+  font-size: 1.15rem;
+}
+
 .form-body {
   margin: 3px 0 15px 0;
   display: flex;
@@ -165,10 +165,21 @@ input:focus {
   cursor: pointer;
 }
 
+#game-setup {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+#game-setup p {
+  font-size: 1.8rem;
+}
+
 #setup {
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
+  gap: 15px 30px;
+  margin: 20px 0;
 }
 
 #dock {
@@ -176,11 +187,12 @@ input:focus {
   grid-template-columns: repeat(3, auto);
   justify-items: center;
   align-items: center;
-  gap: 10px 5px;
+  gap: 20px;
 }
 
 #dock > div:first-child {
   grid-column: 1 / 4;
+  font-size: 1.5rem;
 }
 
 .docked-ship {
@@ -194,9 +206,17 @@ input:focus {
   border-radius: 3px;
 }
 
-.horizontal, .vertical {
+.horizontal,
+.vertical {
   width: 40px;
   filter: invert(100%) brightness(1000%);
+  border: 1.5px solid black;
+  cursor: pointer;
+}
+
+.move {
+  position: absolute;
+  transition: transform 0.05s linear;
 }
 
 #setup-grid {
@@ -213,6 +233,8 @@ input:focus {
 
 #randomize {
   grid-column: 2;
+  justify-self: center;
+  cursor: pointer;
 }
 
 footer {
