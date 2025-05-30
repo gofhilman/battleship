@@ -1,24 +1,65 @@
 import PubSub from "pubsub-js";
 import { OPPONENT } from "./pubsub-msg";
-
-const gameSetting = document.querySelector("#game-setting");
-const confirmSetting = document.querySelector("#confirm-setting");
+import horizontalIcon from "./assets/arrow-left-right-bold.svg";
+import verticalIcon from "./assets/arrow-up-down-bold.svg";
+import { subscriptionPromise } from "./event-handlers";
 
 function displayGameSetting(players) {
+  const gameSetting = document.querySelector("#game-setting");
+  const confirmSetting = document.querySelector("#confirm-setting");
+
   gameSetting.showModal();
-  confirmSetting.addEventListener("click", (event) => {
+  confirmSetting.addEventListener("click", async (event) => {
     event.preventDefault();
     gameSetting.close();
     const opponentType = document.querySelector(
       "[name='opponent-type']:checked"
     );
     PubSub.publish(OPPONENT.TYPE, opponentType.value);
-    displaySetup(players);
+    await subscriptionPromise;
+    displaySetup(players[0]);
   });
 }
 
-function displaySetup(players) {
-  
+function displaySetup(player) {
+  const gameSetup = document.querySelector("#game-setup");
+  const playerName = document.querySelector("#player-name");
+  const dock = document.querySelector("#dock");
+  const setupGrid = document.querySelector("#setup-grid");
+  const randomize = document.querySelector("#randomize");
+  const confirmSetup = document.querySelector("#confirm-setup");
+
+  playerName.textContent = player.name;
+  const shipLengths = [5, 4, 3, 3, 2];
+  shipLengths.forEach((shipLength) => {
+    const dockedShip = document.createElement("div");
+    dockedShip.classList.add("docked-ship");
+    for (let elementIter = 0; elementIter < shipLength; elementIter++) {
+      const shipElement = document.createElement("div");
+      shipElement.classList.add("ship-element");
+      dockedShip.appendChild(shipElement);
+    }
+    const horizontal = document.createElement("img");
+    const vertical = document.createElement("img");
+    Object.assign(horizontal, {
+      src: horizontalIcon,
+      alt: "horizontal",
+      class: "horizontal",
+    });
+    Object.assign(vertical, {
+      src: verticalIcon,
+      alt: "vertical",
+      class: "vertical",
+    });
+    dock.append(dockedShip, horizontal, vertical);
+  });
+  for(let elementIter = 0; elementIter < 100; elementIter++) {
+    const gridElement = document.createElement("div");
+    setupGrid.appendChild(gridElement);
+  }
+
+  gameSetup.showModal();
+
 }
 
 export { displayGameSetting, displaySetup };

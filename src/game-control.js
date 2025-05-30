@@ -1,6 +1,7 @@
 import PubSub from "pubsub-js";
 import Player from "./player";
 import { OPPONENT } from "./pubsub-msg";
+import { resolveSubscription } from "./event-handlers";
 
 class GameControl {
   constructor() {
@@ -16,6 +17,7 @@ class GameControl {
         opponentType
       )
     );
+    resolveSubscription();
   }
 }
 
