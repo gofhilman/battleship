@@ -1,5 +1,7 @@
 import Gameboard from "./gameboard.js";
+import { GAMEBOARD } from "./pubsub-msg.js";
 import Ship from "./ship.js";
+import PubSub from "pubsub-js";
 
 class Player {
   constructor(name, type) {
@@ -55,6 +57,12 @@ class Player {
 
   canAttack(opponentBoard, coordinate) {
     return opponentBoard.isAttacked(coordinate);
+  }
+
+  placeShipPubSub(_, shipState) {
+    this.gameboard.placeShip(...shipState);
+    console.log(this.gameboard.grid);
+    PubSub.publish(GAMEBOARD.GRID, this.gameboard.grid);
   }
 }
 

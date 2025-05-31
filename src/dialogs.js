@@ -1,8 +1,9 @@
 import PubSub from "pubsub-js";
-import { OPPONENT } from "./pubsub-msg";
+import { GAMEBOARD, OPPONENT, SHIP } from "./pubsub-msg";
 import horizontalIcon from "./assets/arrow-left-right-bold.svg";
 import verticalIcon from "./assets/arrow-up-down-bold.svg";
 import { handleOrientation, subscriptionPromise } from "./event-handlers";
+import { renderGrid } from "./render";
 
 function displayGameSetting(players) {
   const gameSetting = document.querySelector("#game-setting");
@@ -53,12 +54,15 @@ function displaySetup(player) {
     });
     dock.append(dockedShip, horizontal, vertical);
   });
+  PubSub.subscribe(SHIP.STATE, player.placeShipPubSub.bind(player));
   dock.addEventListener("click", (event) => handleOrientation(event));
   for (let elementIter = 0; elementIter < 100; elementIter++) {
     const gridElement = document.createElement("div");
     gridElement.classList.add("grid-element");
     setupGrid.appendChild(gridElement);
   }
+  PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
+  // need unsubscribe when finished
 
   gameSetup.showModal();
 }
