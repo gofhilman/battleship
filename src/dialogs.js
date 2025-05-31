@@ -2,7 +2,12 @@ import PubSub from "pubsub-js";
 import { GAMEBOARD, OPPONENT, SHIP } from "./pubsub-msg";
 import horizontalIcon from "./assets/arrow-left-right-bold.svg";
 import verticalIcon from "./assets/arrow-up-down-bold.svg";
-import { handleOrientation, subscriptionPromise } from "./event-handlers";
+import {
+  handleOrientation,
+  handleRandomize,
+  handleSetupReset,
+  subscriptionPromise,
+} from "./event-handlers";
 import { renderGrid } from "./render";
 
 function displayGameSetting(players) {
@@ -27,6 +32,7 @@ function displaySetup(player) {
   const playerName = document.querySelector("#player-name");
   const dock = document.querySelector("#dock");
   const setupGrid = document.querySelector("#setup-grid");
+  const setupReset = document.querySelector("#setup-reset");
   const randomize = document.querySelector("#randomize");
   const confirmSetup = document.querySelector("#confirm-setup");
 
@@ -62,8 +68,11 @@ function displaySetup(player) {
     setupGrid.appendChild(gridElement);
   }
   PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
-  // need unsubscribe when finished
+  setupReset.addEventListener("click", () => handleSetupReset(player));
+  randomize.addEventListener("click", () => handleRandomize(player));
+  // confirmSetup.addEventListener("click");
 
+  // need unsubscribe when finished
   gameSetup.showModal();
 }
 

@@ -1,4 +1,5 @@
-import { SHIP } from "./pubsub-msg";
+import Gameboard from "./gameboard";
+import { GAMEBOARD, SHIP } from "./pubsub-msg";
 import Ship from "./ship";
 import PubSub from "pubsub-js";
 
@@ -53,6 +54,24 @@ function handleOrientation(event, player) {
   }
 }
 
+function handleSetupReset(player) {
+  player.gameboard = new Gameboard();
+  const dock = document.querySelector("#dock");
+  Array.from(dock.children).forEach((child) => {
+    child.classList.remove("hidden");
+  });
+  PubSub.publish(GAMEBOARD.GRID, player.gameboard.grid);
+}
+
+function handleRandomize(player) {
+  player.placeShipsRandomly();
+  const dock = document.querySelector("#dock");
+  Array.from(dock.children).forEach((child) => {
+    child.classList.add("hidden");
+  });
+  PubSub.publish(GAMEBOARD.GRID, player.gameboard.grid);
+}
+
 function handleMove(event, movingElement, parent) {
   const leftOffset = parent.getBoundingClientRect().left + 70;
   const topOffset = parent.getBoundingClientRect().top + 35;
@@ -90,4 +109,10 @@ function handlePlacing(
   }
 }
 
-export { resolveSubscription, subscriptionPromise, handleOrientation };
+export {
+  resolveSubscription,
+  subscriptionPromise,
+  handleOrientation,
+  handleSetupReset,
+  handleRandomize,
+};

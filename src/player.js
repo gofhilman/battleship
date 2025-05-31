@@ -11,6 +11,7 @@ class Player {
   }
 
   placeShipsRandomly() {
+    this.gameboard = new Gameboard();
     const shipLengths = [5, 4, 3, 3, 2];
     let shipIter = 0;
     while (shipIter < 5) {
