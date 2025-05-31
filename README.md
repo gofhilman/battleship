@@ -4,4 +4,5 @@ A web-based battleship game with TDD practices
 
 ## To Do
 
-- Create UI
+- Subscribe ship placement
+- Render grid

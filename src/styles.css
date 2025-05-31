@@ -166,8 +166,7 @@ input:focus {
 }
 
 #game-setup {
-  padding-left: 50px;
-  padding-right: 50px;
+  padding: 15px 50px;
 }
 
 #game-setup p {
@@ -214,9 +213,20 @@ input:focus {
   cursor: pointer;
 }
 
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .move {
   position: absolute;
-  transition: transform 0.05s linear;
+  transition: transform 0.02s linear;
+  align-self: flex-start;
+  pointer-events: none;
+}
+
+.vertical-ship {
+  flex-direction: column;
 }
 
 #setup-grid {
@@ -231,8 +241,7 @@ input:focus {
   height: 40px;
 }
 
-#randomize {
-  grid-column: 2;
+#setup-reset, #randomize {
   justify-self: center;
   cursor: pointer;
 }

@@ -52,8 +52,8 @@ function displaySetup(player) {
       className: "vertical",
     });
     dock.append(dockedShip, horizontal, vertical);
-    dock.addEventListener("click", (event) => handleOrientation(event));
   });
+  dock.addEventListener("click", (event) => handleOrientation(event));
   for (let elementIter = 0; elementIter < 100; elementIter++) {
     const gridElement = document.createElement("div");
     gridElement.classList.add("grid-element");
