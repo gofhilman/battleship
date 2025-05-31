@@ -55,7 +55,7 @@ function displaySetup(player) {
     dock.append(dockedShip, horizontal, vertical);
   });
   PubSub.subscribe(SHIP.STATE, player.placeShipPubSub.bind(player));
-  dock.addEventListener("click", (event) => handleOrientation(event));
+  dock.addEventListener("click", (event) => handleOrientation(event, player));
   for (let elementIter = 0; elementIter < 100; elementIter++) {
     const gridElement = document.createElement("div");
     gridElement.classList.add("grid-element");

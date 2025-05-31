@@ -4,5 +4,4 @@ A web-based battleship game with TDD practices
 
 ## To Do
 
-- Subscribe ship placement
-- Render grid
+- Clear "choose the orientations" text after done

@@ -7,7 +7,7 @@ const subscriptionPromise = new Promise((resolve) => {
   resolveSubscription = resolve;
 });
 
-function handleOrientation(event) {
+function handleOrientation(event, player) {
   if (
     event.target.classList.contains("horizontal") ||
     event.target.classList.contains("vertical")
@@ -37,19 +37,18 @@ function handleOrientation(event) {
     const moveHandler = (event) => handleMove(event, clonedShip, gameSetup);
     gameSetup.addEventListener("mousemove", moveHandler);
     setTimeout(() => {
-      gameSetup.addEventListener(
-        "click",
-        (event) => {
-          handlePlacing(
-            event,
-            clonedShip,
-            gameSetup,
-            shipOrientation,
-            moveHandler
-          );
-        },
-        { once: true }
-      );
+      const placingHandler = (event) => {
+        handlePlacing(
+          event,
+          clonedShip,
+          gameSetup,
+          shipOrientation,
+          moveHandler,
+          placingHandler,
+          player
+        );
+      };
+      gameSetup.addEventListener("click", placingHandler);
     }, 100);
   }
 }
@@ -65,12 +64,12 @@ function handlePlacing(
   movingElement,
   parent,
   shipOrientation,
-  moveHandler
+  moveHandler,
+  placingHandler,
+  player
 ) {
   if (event.target.classList.contains("grid-element")) {
     const shipLength = movingElement.children.length;
-    movingElement.remove();
-    parent.removeEventListener("mousemove", moveHandler);
     const gridElementNumber = Array.from(
       event.target.parentElement.children
     ).indexOf(event.target);
@@ -78,11 +77,16 @@ function handlePlacing(
       Math.floor(gridElementNumber / 10),
       gridElementNumber % 10,
     ];
-    PubSub.publish(SHIP.STATE, [
-      new Ship(shipLength),
-      shipOrientation,
-      position,
-    ]);
+    if (player.gameboard.isValidPos(shipLength, shipOrientation, position)) {
+      PubSub.publish(SHIP.STATE, [
+        new Ship(shipLength),
+        shipOrientation,
+        position,
+      ]);
+      movingElement.remove();
+      parent.removeEventListener("mousemove", moveHandler);
+      parent.removeEventListener("click", placingHandler);
+    }
   }
 }
 
