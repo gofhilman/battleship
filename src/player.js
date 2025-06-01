@@ -32,6 +32,7 @@ class Player {
         shipIter++;
       }
     }
+    console.log(this.gameboard.grid); // Test
   }
 
   attack(opponentBoard, coordinate) {
@@ -62,7 +63,7 @@ class Player {
 
   placeShipPubSub(_, shipState) {
     this.gameboard.placeShip(...shipState);
-    console.log(this.gameboard.grid);
+    console.log(this.gameboard.grid); // Test
     PubSub.publish(GAMEBOARD.GRID, this.gameboard.grid);
   }
 }

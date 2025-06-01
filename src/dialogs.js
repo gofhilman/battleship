@@ -24,6 +24,14 @@ function displayGameSetting(players) {
     PubSub.publish(OPPONENT.TYPE, opponentType.value);
     await subscriptionPromise;
     displaySetup(players[0]);
+    if (players[1].type === "computer") {
+      PubSub.subscribe(
+        "setup",
+        players[1].placeShipsRandomly.bind(players[1])
+      );
+    } else {
+      PubSub.subscribe("setup", displayTransition);
+    }
   });
 }
 
@@ -70,10 +78,18 @@ function displaySetup(player) {
   PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
   setupReset.addEventListener("click", () => handleSetupReset(player));
   randomize.addEventListener("click", () => handleRandomize(player));
-  // confirmSetup.addEventListener("click");
+  confirmSetup.addEventListener("click", (event) => {
+    event.preventDefault();
+    gameSetup.close();
+    PubSub.publish("setup");
+  });
 
   // need unsubscribe when finished
   gameSetup.showModal();
 }
 
-export { displayGameSetting, displaySetup };
+function displayTransition(transitionType) {
+  
+}
+
+export { displayGameSetting };

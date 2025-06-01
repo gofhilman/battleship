@@ -4,4 +4,4 @@ A web-based battleship game with TDD practices
 
 ## To Do
 
-- Add setup confirm button function
+- Create transition dialog and its functionality
