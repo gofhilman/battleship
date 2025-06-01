@@ -3,7 +3,8 @@ export const OPPONENT = {
 };
 
 export const SHIP = {
-  STATE: "ship.state"
+  STATE: "ship.state",
+  COMPLETE: "ship.complete"
 };
 
 export const GAMEBOARD =  {

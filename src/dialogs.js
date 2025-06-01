@@ -25,10 +25,7 @@ function displayGameSetting(players) {
     await subscriptionPromise;
     displaySetup(players[0]);
     if (players[1].type === "computer") {
-      PubSub.subscribe(
-        "setup",
-        players[1].placeShipsRandomly.bind(players[1])
-      );
+      PubSub.subscribe("setup", players[1].placeShipsRandomly.bind(players[1]));
     } else {
       PubSub.subscribe("setup", displayTransition);
     }
@@ -76,6 +73,9 @@ function displaySetup(player) {
     setupGrid.appendChild(gridElement);
   }
   PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
+  PubSub.subscribe(GAMEBOARD.GRID, player.isEverythingPlaced.bind(player));
+  confirmSetup.disabled = true;
+  PubSub.subscribe(SHIP.COMPLETE, setupComplete);
   setupReset.addEventListener("click", () => handleSetupReset(player));
   randomize.addEventListener("click", () => handleRandomize(player));
   confirmSetup.addEventListener("click", (event) => {
@@ -89,7 +89,20 @@ function displaySetup(player) {
 }
 
 function displayTransition(transitionType) {
-  
+  const transition = document.querySelector("#transition");
+
+  transition.showModal();
+}
+
+function setupComplete(_, complete) {
+  const confirmSetup = document.querySelector("#confirm-setup");
+  const dock = document.querySelector("#dock");
+  confirmSetup.disabled = complete ? false : true;
+  if(complete) {
+    dock.firstElementChild.textContent = "";
+  } else {
+    dock.firstElementChild.textContent = "Choose the orientations";
+  }
 }
 
 export { displayGameSetting };

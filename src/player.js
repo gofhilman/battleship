@@ -1,5 +1,5 @@
 import Gameboard from "./gameboard.js";
-import { GAMEBOARD } from "./pubsub-msg.js";
+import { GAMEBOARD, SHIP } from "./pubsub-msg.js";
 import Ship from "./ship.js";
 import PubSub from "pubsub-js";
 
@@ -32,7 +32,7 @@ class Player {
         shipIter++;
       }
     }
-    console.log(this.gameboard.grid); // Test
+    console.log(this.gameboard.ships); // Test
   }
 
   attack(opponentBoard, coordinate) {
@@ -42,7 +42,7 @@ class Player {
 
   attackRandomly(opponentBoard) {
     let randomCoordinate = this.randomizePosition();
-    while(!this.canAttack(opponentBoard, randomCoordinate)) {
+    while (!this.canAttack(opponentBoard, randomCoordinate)) {
       randomCoordinate = this.randomizePosition();
     }
     this.attack(opponentBoard, randomCoordinate);
@@ -65,6 +65,11 @@ class Player {
     this.gameboard.placeShip(...shipState);
     console.log(this.gameboard.grid); // Test
     PubSub.publish(GAMEBOARD.GRID, this.gameboard.grid);
+  }
+
+  isEverythingPlaced() {
+    const complete = this.gameboard.ships.length === 5 ? true : false;
+    PubSub.publish(SHIP.COMPLETE, complete);
   }
 }
 
