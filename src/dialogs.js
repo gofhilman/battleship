@@ -8,9 +8,8 @@ import {
   handleSetupReset,
   subscriptionPromise,
 } from "./event-handlers";
-import { renderGrid } from "./render";
 
-let setupToken, placeShipToken, renderToken, checkToken, completeToken;
+let setupToken, placeShipToken, checkToken;
 let orientationHandler,
   setupResetHandler,
   randomizeHandler,
@@ -86,13 +85,11 @@ function displaySetup(players, player) {
     gridElement.classList.add("grid-element");
     setupGrid.appendChild(gridElement);
   }
-  renderToken = PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
   checkToken = PubSub.subscribe(
     GAMEBOARD.GRID,
     player.isEverythingPlaced.bind(player)
   );
   confirmSetup.disabled = true;
-  completeToken = PubSub.subscribe(SHIP.COMPLETE, setupComplete);
   setupResetHandler = () => handleSetupReset(player);
   setupReset.addEventListener("click", setupResetHandler);
   randomizeHandler = () => handleRandomize(player);
@@ -127,13 +124,9 @@ function displayTransition(transitionType, playerArray) {
     event.preventDefault();
     transition.close();
     if (transitionType === "setup") {
-      [
-        setupToken,
-        placeShipToken,
-        renderToken,
-        checkToken,
-        completeToken,
-      ].forEach((token) => PubSub.unsubscribe(token));
+      [setupToken, placeShipToken, checkToken].forEach((token) =>
+        PubSub.unsubscribe(token)
+      );
 
       const dock = document.querySelector("#dock");
       const setupReset = document.querySelector("#setup-reset");
@@ -166,4 +159,4 @@ function setupComplete(_, complete) {
   }
 }
 
-export { displayGameSetting };
+export { displayGameSetting, setupComplete };

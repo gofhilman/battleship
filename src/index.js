@@ -1,12 +1,12 @@
 import "./styles.css";
 import "../node_modules/modern-normalize/modern-normalize.css";
+import "./global-subscription";
 import { displayGameSetting } from "./dialogs";
 import GameControl from "./game-control";
 import PubSub from "pubsub-js";
-import { DISPLAY, OPPONENT } from "./pubsub-msg";
-import { startMain } from "./game-main";
+import { OPPONENT } from "./pubsub-msg";
+
 
 const gameControl = new GameControl();
 PubSub.subscribe(OPPONENT.TYPE, gameControl.createPlayers.bind(gameControl));
-PubSub.subscribe(DISPLAY.MAIN, startMain);
 displayGameSetting(gameControl.players);
