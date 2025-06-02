@@ -8,6 +8,7 @@ import {
   handleSetupReset,
   subscriptionPromise,
 } from "./event-handlers";
+import { createGrid } from "./grid";
 
 let setupToken, placeShipToken, checkToken;
 let orientationHandler,
@@ -80,11 +81,7 @@ function displaySetup(players, player) {
   );
   orientationHandler = (event) => handleOrientation(event, player);
   dock.addEventListener("click", orientationHandler);
-  for (let elementIter = 0; elementIter < 100; elementIter++) {
-    const gridElement = document.createElement("div");
-    gridElement.classList.add("grid-element");
-    setupGrid.appendChild(gridElement);
-  }
+  createGrid(setupGrid);
   checkToken = PubSub.subscribe(
     GAMEBOARD.GRID,
     player.isEverythingPlaced.bind(player)

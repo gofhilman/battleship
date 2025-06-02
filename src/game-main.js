@@ -1,6 +1,15 @@
+import { createGrid, createStatusGrid } from "./grid";
+
+const mainContainer = document.querySelector("#main-container");
+const gridOne = document.querySelector("#grid-one");
+const gridTwo = document.querySelector("#grid-two");
+const statusOne = document.querySelector("#status-one");
+const statusTwo = document.querySelector("#status-two");
+
 function startMain(_, secondPlayerType) {
   if (secondPlayerType === "computer") {
-    const mainContainer = document.querySelector("#main-container");
+    [gridOne, gridTwo].forEach((grid) => createGrid(grid));
+    [statusOne, statusTwo].forEach((status) => createStatusGrid(status));
     mainContainer.classList.remove("no-display");
   } else {
     const transition = document.querySelector("#transition");
