@@ -8,6 +8,8 @@ const subscriptionPromise = new Promise((resolve) => {
   resolveSubscription = resolve;
 });
 
+let moveHandler, placingHandler;
+
 function handleOrientation(event, player) {
   if (
     event.target.classList.contains("horizontal") ||
@@ -35,17 +37,15 @@ function handleOrientation(event, player) {
     clonedShip.classList.add("move");
     const gameSetup = document.querySelector("#game-setup");
     gameSetup.appendChild(clonedShip);
-    const moveHandler = (event) => handleMove(event, clonedShip, gameSetup);
+    moveHandler = (event) => handleMove(event, clonedShip, gameSetup);
     gameSetup.addEventListener("mousemove", moveHandler);
     setTimeout(() => {
-      const placingHandler = (event) => {
+      placingHandler = (event) => {
         handlePlacing(
           event,
           clonedShip,
           gameSetup,
           shipOrientation,
-          moveHandler,
-          placingHandler,
           player
         );
       };
@@ -83,8 +83,6 @@ function handlePlacing(
   movingElement,
   parent,
   shipOrientation,
-  moveHandler,
-  placingHandler,
   player
 ) {
   if (event.target.classList.contains("grid-element")) {

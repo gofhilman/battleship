@@ -32,7 +32,7 @@ class Player {
         shipIter++;
       }
     }
-    console.log(this.gameboard.ships); // Test
+    console.log(this.gameboard.grid); // Test
   }
 
   attack(opponentBoard, coordinate) {

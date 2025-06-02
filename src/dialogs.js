@@ -10,6 +10,12 @@ import {
 } from "./event-handlers";
 import { renderGrid } from "./render";
 
+let setupToken, placeShipToken, renderToken, checkToken, completeToken;
+let orientationHandler,
+  setupResetHandler,
+  randomizeHandler,
+  confirmSetupHandler;
+
 function displayGameSetting(players) {
   const gameSetting = document.querySelector("#game-setting");
   const confirmSetting = document.querySelector("#confirm-setting");
@@ -23,16 +29,19 @@ function displayGameSetting(players) {
     );
     PubSub.publish(OPPONENT.TYPE, opponentType.value);
     await subscriptionPromise;
-    displaySetup(players[0]);
+    displaySetup(players, players[0]);
     if (players[1].type === "computer") {
-      PubSub.subscribe("setup", players[1].placeShipsRandomly.bind(players[1]));
+      setupToken = PubSub.subscribe(
+        "setup",
+        players[1].placeShipsRandomly.bind(players[1])
+      );
     } else {
-      PubSub.subscribe("setup", displayTransition);
+      setupToken = PubSub.subscribe("setup", displayTransition);
     }
   });
 }
 
-function displaySetup(player) {
+function displaySetup(players, player) {
   const gameSetup = document.querySelector("#game-setup");
   const playerName = document.querySelector("#player-name");
   const dock = document.querySelector("#dock");
@@ -65,40 +74,82 @@ function displaySetup(player) {
     });
     dock.append(dockedShip, horizontal, vertical);
   });
-  PubSub.subscribe(SHIP.STATE, player.placeShipPubSub.bind(player));
-  dock.addEventListener("click", (event) => handleOrientation(event, player));
+  placeShipToken = PubSub.subscribe(
+    SHIP.STATE,
+    player.placeShipPubSub.bind(player)
+  );
+  orientationHandler = (event) => handleOrientation(event, player);
+  dock.addEventListener("click", orientationHandler);
   for (let elementIter = 0; elementIter < 100; elementIter++) {
     const gridElement = document.createElement("div");
     gridElement.classList.add("grid-element");
     setupGrid.appendChild(gridElement);
   }
-  PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
-  PubSub.subscribe(GAMEBOARD.GRID, player.isEverythingPlaced.bind(player));
+  renderToken = PubSub.subscribe(GAMEBOARD.GRID, renderGrid);
+  checkToken = PubSub.subscribe(
+    GAMEBOARD.GRID,
+    player.isEverythingPlaced.bind(player)
+  );
   confirmSetup.disabled = true;
-  PubSub.subscribe(SHIP.COMPLETE, setupComplete);
-  setupReset.addEventListener("click", () => handleSetupReset(player));
-  randomize.addEventListener("click", () => handleRandomize(player));
-  confirmSetup.addEventListener("click", (event) => {
+  completeToken = PubSub.subscribe(SHIP.COMPLETE, setupComplete);
+  setupResetHandler = () => handleSetupReset(player);
+  setupReset.addEventListener("click", setupResetHandler);
+  randomizeHandler = () => handleRandomize(player);
+  randomize.addEventListener("click", randomizeHandler);
+  confirmSetupHandler = (event) => {
     event.preventDefault();
     gameSetup.close();
-    PubSub.publish("setup");
-  });
+    dock.replaceChildren(dock.firstElementChild);
+    dock.firstElementChild.textContent = "Choose the orientations";
+    setupGrid.replaceChildren();
+    PubSub.publish("setup", [players, players[1]]);
+  };
+  confirmSetup.addEventListener("click", confirmSetupHandler);
 
-  // need unsubscribe when finished
   gameSetup.showModal();
 }
 
-function displayTransition(transitionType) {
+function displayTransition(transitionType, playerArray) {
   const transition = document.querySelector("#transition");
+  const confirmTransition = document.querySelector("#confirm-transition");
 
   transition.showModal();
+  confirmTransition.addEventListener("click", (event) => {
+    event.preventDefault();
+    transition.close();
+    if (transitionType === "setup") {
+      [
+        setupToken,
+        placeShipToken,
+        renderToken,
+        checkToken,
+        completeToken,
+      ].forEach((token) => PubSub.unsubscribe(token));
+
+      const dock = document.querySelector("#dock");
+      const setupReset = document.querySelector("#setup-reset");
+      const randomize = document.querySelector("#randomize");
+      const confirmSetup = document.querySelector("#confirm-setup");
+
+      [
+        [dock, orientationHandler],
+        [setupReset, setupResetHandler],
+        [randomize, randomizeHandler],
+        [confirmSetup, confirmSetupHandler],
+      ].forEach((pair) => {
+        pair[0].removeEventListener("click", pair[1]);
+      });
+
+      displaySetup(...playerArray);
+    }
+  });
 }
 
 function setupComplete(_, complete) {
   const confirmSetup = document.querySelector("#confirm-setup");
   const dock = document.querySelector("#dock");
   confirmSetup.disabled = complete ? false : true;
-  if(complete) {
+  if (complete) {
     dock.firstElementChild.textContent = "";
   } else {
     dock.firstElementChild.textContent = "Choose the orientations";
