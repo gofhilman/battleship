@@ -1,5 +1,5 @@
 import PubSub from "pubsub-js";
-import { GAMEBOARD, OPPONENT, SHIP } from "./pubsub-msg";
+import { DISPLAY, GAMEBOARD, OPPONENT, SHIP } from "./pubsub-msg";
 import horizontalIcon from "./assets/arrow-left-right-bold.svg";
 import verticalIcon from "./assets/arrow-up-down-bold.svg";
 import {
@@ -103,6 +103,9 @@ function displaySetup(players, player) {
     dock.firstElementChild.textContent = "Choose the orientations";
     setupGrid.replaceChildren();
     PubSub.publish("setup", [players, players[1]]);
+    if(players[1].type === "computer" || JSON.stringify(players[1]) === JSON.stringify(player)) {
+      PubSub.publish(DISPLAY.MAIN);
+    }
   };
   confirmSetup.addEventListener("click", confirmSetupHandler);
 

@@ -10,3 +10,7 @@ export const SHIP = {
 export const GAMEBOARD =  {
   GRID: "gameboard.grid"
 };
+
+export const DISPLAY = {
+  MAIN: "display.main"
+};

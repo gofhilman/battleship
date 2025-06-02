@@ -266,6 +266,10 @@ input:focus {
   font-size: 2rem;
 }
 
+.no-display {
+  display: none;
+}
+
 footer {
   padding: 3px 0;
   font-size: 0.9rem;
