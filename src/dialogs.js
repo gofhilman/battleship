@@ -14,7 +14,8 @@ let setupToken, placeShipToken, renderToken, checkToken, completeToken;
 let orientationHandler,
   setupResetHandler,
   randomizeHandler,
-  confirmSetupHandler;
+  confirmSetupHandler,
+  confirmTransitionHandler;
 
 function displayGameSetting(players) {
   const gameSetting = document.querySelector("#game-setting");
@@ -103,8 +104,13 @@ function displaySetup(players, player) {
     dock.firstElementChild.textContent = "Choose the orientations";
     setupGrid.replaceChildren();
     PubSub.publish("setup", [players, players[1]]);
-    if(players[1].type === "computer" || JSON.stringify(players[1]) === JSON.stringify(player)) {
-      PubSub.publish(DISPLAY.MAIN);
+    if (
+      players[1].type === "computer" ||
+      JSON.stringify(players[1]) === JSON.stringify(player)
+    ) {
+      const confirmTransition = document.querySelector("#confirm-transition");
+      confirmTransition.removeEventListener("click", confirmTransitionHandler);
+      PubSub.publish(DISPLAY.MAIN, players[1].type);
     }
   };
   confirmSetup.addEventListener("click", confirmSetupHandler);
@@ -117,7 +123,7 @@ function displayTransition(transitionType, playerArray) {
   const confirmTransition = document.querySelector("#confirm-transition");
 
   transition.showModal();
-  confirmTransition.addEventListener("click", (event) => {
+  confirmTransitionHandler = (event) => {
     event.preventDefault();
     transition.close();
     if (transitionType === "setup") {
@@ -145,7 +151,8 @@ function displayTransition(transitionType, playerArray) {
 
       displaySetup(...playerArray);
     }
-  });
+  };
+  confirmTransition.addEventListener("click", confirmTransitionHandler);
 }
 
 function setupComplete(_, complete) {
