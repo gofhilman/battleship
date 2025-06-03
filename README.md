@@ -4,4 +4,6 @@ A web-based battleship game with TDD practices
 
 ## To Do
 
-- Create the main game
+- Subscribe TURN
+- Create grid and status render functions
+- Create attack scheme

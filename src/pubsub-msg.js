@@ -1,16 +1,18 @@
 export const OPPONENT = {
-  TYPE: "opponent.type"
+  TYPE: "opponent.type",
 };
 
 export const SHIP = {
   STATE: "ship.state",
-  COMPLETE: "ship.complete"
+  COMPLETE: "ship.complete",
 };
 
-export const GAMEBOARD =  {
-  GRID: "gameboard.grid"
+export const GAMEBOARD = {
+  GRID: "gameboard.grid",
 };
 
 export const DISPLAY = {
-  MAIN: "display.main"
+  MAIN: "display.main",
 };
+
+export const TURN = "turn";

@@ -1,4 +1,7 @@
+import PubSub from "pubsub-js";
 import { createGrid, createStatusGrid } from "./grid";
+import { TURN } from "./pubsub-msg";
+import gameControl from "./game-control";
 
 const mainContainer = document.querySelector("#main-container");
 const gridOne = document.querySelector("#grid-one");
@@ -11,6 +14,8 @@ function startMain(_, secondPlayerType) {
     [gridOne, gridTwo].forEach((grid) => createGrid(grid));
     [statusOne, statusTwo].forEach((status) => createStatusGrid(status));
     mainContainer.classList.remove("no-display");
+    PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
+
   } else {
     const transition = document.querySelector("#transition");
     const confirmTransition = document.querySelector("#confirm-transition");

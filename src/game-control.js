@@ -4,6 +4,7 @@ import { resolveSubscription } from "./event-handlers";
 class GameControl {
   constructor() {
     this.players = [];
+    this.activePlayer = null;
   }
 
   createPlayers(_, opponentType) {
@@ -14,8 +15,16 @@ class GameControl {
         opponentType
       )
     );
+    this.activePlayer = this.players[0];
     resolveSubscription();
+  }
+
+  switchActivePlayer() {
+    this.activePlayer =
+      this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
   }
 }
 
-export default GameControl;
+const gameControl = new GameControl();
+
+export default gameControl;
