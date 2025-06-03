@@ -104,7 +104,6 @@ function displaySetup(players, player) {
     ) {
       const confirmTransition = document.querySelector("#confirm-transition");
       confirmTransition.removeEventListener("click", confirmTransitionHandler);
-      unsubscribeAll();
       PubSub.publish(DISPLAY.MAIN, players[1].type);
     }
   };
@@ -160,4 +159,4 @@ function unsubscribeAll() {
   });  
 }
 
-export { displayGameSetting, setupComplete };
+export { displayGameSetting, setupComplete, unsubscribeAll };

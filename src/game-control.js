@@ -23,6 +23,12 @@ class GameControl {
     this.activePlayer =
       this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
   }
+
+  sortShips() {
+    this.players.forEach((player) => {
+      player.gameboard.ships.sort((a, b) => b.length - a.length);
+    });
+  }
 }
 
 const gameControl = new GameControl();

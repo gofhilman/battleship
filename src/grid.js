@@ -11,7 +11,7 @@ function createStatusGrid(status) {
   shipLengths.forEach((shipLength) => {
     const shipStatus = document.createElement("div");
     shipStatus.classList.add("ship-status");
-    for(let elementIter = 0; elementIter < shipLength; elementIter++) {
+    for (let elementIter = 0; elementIter < shipLength; elementIter++) {
       const statusElement = document.createElement("div");
       statusElement.classList.add("status-element");
       shipStatus.appendChild(statusElement);
@@ -30,6 +30,15 @@ function renderSetupGrid(_, grid) {
       setupGrid.children[gridIter].appendChild(shipElement);
     }
   }
+}
+
+function renderStatus() {
+  const statusOne = document.querySelector("#status-one");
+  const statusTwo = document.querySelector("#status-two");
+  const status = [statusOne, statusTwo];
+  // for(let playerIter = 0; playerIter < 2; playerIter++) {
+
+  // }
 }
 
 export { renderSetupGrid, createGrid, createStatusGrid };

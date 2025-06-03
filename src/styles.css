@@ -345,6 +345,10 @@ input:focus {
   background-color: rgb(38, 115, 77);
 }
 
+.red {
+  background-color: red;
+}
+
 footer {
   padding: 3px 0;
   font-size: 0.9rem;
