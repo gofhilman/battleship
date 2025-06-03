@@ -104,6 +104,7 @@ function displaySetup(players, player) {
     ) {
       const confirmTransition = document.querySelector("#confirm-transition");
       confirmTransition.removeEventListener("click", confirmTransitionHandler);
+      unsubscribeAll();
       PubSub.publish(DISPLAY.MAIN, players[1].type);
     }
   };
@@ -121,24 +122,7 @@ function displayTransition(transitionType, playerArray) {
     event.preventDefault();
     transition.close();
     if (transitionType === "setup") {
-      [setupToken, placeShipToken, checkToken].forEach((token) =>
-        PubSub.unsubscribe(token)
-      );
-
-      const dock = document.querySelector("#dock");
-      const setupReset = document.querySelector("#setup-reset");
-      const randomize = document.querySelector("#randomize");
-      const confirmSetup = document.querySelector("#confirm-setup");
-
-      [
-        [dock, orientationHandler],
-        [setupReset, setupResetHandler],
-        [randomize, randomizeHandler],
-        [confirmSetup, confirmSetupHandler],
-      ].forEach((pair) => {
-        pair[0].removeEventListener("click", pair[1]);
-      });
-
+      unsubscribeAll();  
       displaySetup(...playerArray);
     }
   };
@@ -154,6 +138,26 @@ function setupComplete(_, complete) {
   } else {
     dock.firstElementChild.textContent = "Choose the orientations";
   }
+}
+
+function unsubscribeAll() {
+  [setupToken, placeShipToken, checkToken].forEach((token) =>
+    PubSub.unsubscribe(token)
+  );
+
+  const dock = document.querySelector("#dock");
+  const setupReset = document.querySelector("#setup-reset");
+  const randomize = document.querySelector("#randomize");
+  const confirmSetup = document.querySelector("#confirm-setup");
+
+  [
+    [dock, orientationHandler],
+    [setupReset, setupResetHandler],
+    [randomize, randomizeHandler],
+    [confirmSetup, confirmSetupHandler],
+  ].forEach((pair) => {
+    pair[0].removeEventListener("click", pair[1]);
+  });  
 }
 
 export { displayGameSetting, setupComplete };
