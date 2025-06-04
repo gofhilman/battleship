@@ -23,11 +23,13 @@ function startMain(_, secondPlayerType) {
     const confirmTransition = document.querySelector("#confirm-transition");
 
     transition.showModal();
-    confirmTransition.addEventListener("click", (event) => {
+    const humanOpponentHandler = (event) => {
       event.preventDefault();
       transition.close();
       startMain(_, "computer");
-    });
+      confirmTransition.removeEventListener("click", humanOpponentHandler);
+    };
+    confirmTransition.addEventListener("click", humanOpponentHandler);
   }
 }
 

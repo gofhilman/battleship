@@ -1,5 +1,5 @@
 import PubSub from "pubsub-js";
-import { DISPLAY, GAMEBOARD, OPPONENT, SHIP } from "./pubsub-msg";
+import { DISPLAY, GAMEBOARD, OPPONENT, SHIP, TURN } from "./pubsub-msg";
 import horizontalIcon from "./assets/arrow-left-right-bold.svg";
 import verticalIcon from "./assets/arrow-up-down-bold.svg";
 import {
@@ -121,8 +121,12 @@ function displayTransition(transitionType, playerArray) {
     event.preventDefault();
     transition.close();
     if (transitionType === "setup") {
-      unsubscribeAll();  
+      unsubscribeAll();
       displaySetup(...playerArray);
+    } else {
+      const mainContainer = document.querySelector("#main-container");
+      mainContainer.classList.remove("no-display");
+      PubSub.publish(TURN, playerArray);
     }
   };
   confirmTransition.addEventListener("click", confirmTransitionHandler);
@@ -156,7 +160,7 @@ function unsubscribeAll() {
     [confirmSetup, confirmSetupHandler],
   ].forEach((pair) => {
     pair[0].removeEventListener("click", pair[1]);
-  });  
+  });
 }
 
-export { displayGameSetting, setupComplete, unsubscribeAll };
+export { displayGameSetting, displayTransition, setupComplete, unsubscribeAll };

@@ -1,8 +1,8 @@
 import PubSub from "pubsub-js";
-import { DISPLAY, GAMEBOARD, SHIP, OPPONENT, TURN } from "./pubsub-msg";
+import { DISPLAY, GAMEBOARD, SHIP, OPPONENT, TURN, MAIN } from "./pubsub-msg";
 import { startMain } from "./game-main";
 import { renderGrid, renderSetupGrid, renderStatus } from "./grid";
-import { setupComplete } from "./dialogs";
+import { displayTransition, setupComplete } from "./dialogs";
 import gameControl from "./game-control";
 
 PubSub.subscribe(DISPLAY.MAIN, startMain);
@@ -11,6 +11,7 @@ PubSub.subscribe(SHIP.COMPLETE, setupComplete);
 PubSub.subscribe(OPPONENT.TYPE, gameControl.createPlayers.bind(gameControl));
 PubSub.subscribe(TURN, renderGrid);
 PubSub.subscribe(TURN, renderStatus);
+PubSub.subscribe(MAIN, displayTransition);
 
 const gridOne = document.querySelector("#grid-one");
 const gridTwo = document.querySelector("#grid-two");
@@ -36,7 +37,15 @@ grids.forEach((grid) => {
           coordinate
         );
         gameControl.switchActivePlayer();
-        PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
+        if (gameControl.activePlayer.type === "computer") {
+          gameControl.activePlayer.attackRandomly(gameControl.opponent.gameboard);
+          gameControl.switchActivePlayer();
+          PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
+        } else {
+          const mainContainer = document.querySelector("#main-container");
+          mainContainer.classList.add("no-display");
+          PubSub.publish(MAIN, [gameControl.players, gameControl.activePlayer]);
+        } 
       }
     }
   });
