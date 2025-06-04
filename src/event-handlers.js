@@ -3,11 +3,6 @@ import { GAMEBOARD, SHIP } from "./pubsub-msg";
 import Ship from "./ship";
 import PubSub from "pubsub-js";
 
-let resolveSubscription;
-const subscriptionPromise = new Promise((resolve) => {
-  resolveSubscription = resolve;
-});
-
 let moveHandler, placingHandler;
 
 function handleOrientation(event, player) {
@@ -41,13 +36,7 @@ function handleOrientation(event, player) {
     gameSetup.addEventListener("mousemove", moveHandler);
     setTimeout(() => {
       placingHandler = (event) => {
-        handlePlacing(
-          event,
-          clonedShip,
-          gameSetup,
-          shipOrientation,
-          player
-        );
+        handlePlacing(event, clonedShip, gameSetup, shipOrientation, player);
       };
       gameSetup.addEventListener("click", placingHandler);
     }, 100);
@@ -78,13 +67,7 @@ function handleMove(event, movingElement, parent) {
   movingElement.style.transform = `translate(${event.clientX - leftOffset}px, ${event.clientY - topOffset}px)`;
 }
 
-function handlePlacing(
-  event,
-  movingElement,
-  parent,
-  shipOrientation,
-  player
-) {
+function handlePlacing(event, movingElement, parent, shipOrientation, player) {
   if (event.target.classList.contains("grid-element")) {
     const shipLength = movingElement.children.length;
     const gridElementNumber = Array.from(
@@ -107,10 +90,4 @@ function handlePlacing(
   }
 }
 
-export {
-  resolveSubscription,
-  subscriptionPromise,
-  handleOrientation,
-  handleSetupReset,
-  handleRandomize,
-};
+export { handleOrientation, handleSetupReset, handleRandomize };

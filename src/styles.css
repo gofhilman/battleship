@@ -261,16 +261,16 @@ input:focus {
   cursor: pointer;
 }
 
-#transition {
+#transition, #repeat {
   width: 50%;
   height: 30%;
 }
 
-#transition h1 {
+#transition h1, #repeat h1 {
   font-size: 2.5rem;
 }
 
-#transition p {
+#transition p, #repeat p {
   font-size: 2rem;
 }
 

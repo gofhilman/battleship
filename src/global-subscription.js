@@ -1,14 +1,15 @@
 import PubSub from "pubsub-js";
-import { DISPLAY, GAMEBOARD, SHIP, OPPONENT, TURN, MAIN } from "./pubsub-msg";
+import { DISPLAY, GAMEBOARD, SHIP, OPPONENT, TURN, MAIN, CONFIG } from "./pubsub-msg";
 import { startMain } from "./game-main";
 import { renderGrid, renderSetupGrid, renderStatus } from "./grid";
-import { displayTransition, setupComplete } from "./dialogs";
+import { displayRepeat, displaySetup, displayTransition, setupComplete } from "./dialogs";
 import gameControl from "./game-control";
 
 PubSub.subscribe(DISPLAY.MAIN, startMain);
 PubSub.subscribe(GAMEBOARD.GRID, renderSetupGrid);
 PubSub.subscribe(SHIP.COMPLETE, setupComplete);
 PubSub.subscribe(OPPONENT.TYPE, gameControl.createPlayers.bind(gameControl));
+PubSub.subscribe(CONFIG, displaySetup);
 PubSub.subscribe(TURN, renderGrid);
 PubSub.subscribe(TURN, renderStatus);
 PubSub.subscribe(MAIN, displayTransition);
@@ -36,16 +37,32 @@ grids.forEach((grid) => {
           gameControl.opponent.gameboard,
           coordinate
         );
-        gameControl.switchActivePlayer();
-        if (gameControl.activePlayer.type === "computer") {
-          gameControl.activePlayer.attackRandomly(gameControl.opponent.gameboard);
-          gameControl.switchActivePlayer();
+        if (gameControl.opponent.gameboard.isGameOver()) {
+          displayRepeat(gameControl);
           PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
         } else {
-          const mainContainer = document.querySelector("#main-container");
-          mainContainer.classList.add("no-display");
-          PubSub.publish(MAIN, [gameControl.players, gameControl.activePlayer]);
-        } 
+          gameControl.switchActivePlayer();
+          if (gameControl.activePlayer.type === "computer") {
+            gameControl.activePlayer.attackRandomly(
+              gameControl.opponent.gameboard
+            );
+            if (gameControl.opponent.gameboard.isGameOver()) {
+              displayRepeat(gameControl);
+            }
+            gameControl.switchActivePlayer();
+            PubSub.publish(TURN, [
+              gameControl.players,
+              gameControl.activePlayer,
+            ]);
+          } else {
+            const mainContainer = document.querySelector("#main-container");
+            mainContainer.classList.add("no-display");
+            PubSub.publish(MAIN, [
+              gameControl.players,
+              gameControl.activePlayer,
+            ]);
+          }
+        }
       }
     }
   });

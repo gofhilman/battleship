@@ -1,6 +1,7 @@
 import gameControl from "./game-control";
 
 function createGrid(grid) {
+  grid.replaceChildren();
   for (let elementIter = 0; elementIter < 100; elementIter++) {
     const gridElement = document.createElement("div");
     gridElement.classList.add("grid-element");
@@ -9,6 +10,7 @@ function createGrid(grid) {
 }
 
 function createStatusGrid(status) {
+  status.replaceChildren();
   const shipLengths = [5, 4, 3, 3, 2];
   shipLengths.forEach((shipLength) => {
     const shipStatus = document.createElement("div");

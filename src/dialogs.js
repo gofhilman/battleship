@@ -1,12 +1,11 @@
 import PubSub from "pubsub-js";
-import { DISPLAY, GAMEBOARD, OPPONENT, SHIP, TURN } from "./pubsub-msg";
+import { CONFIG, DISPLAY, GAMEBOARD, OPPONENT, SHIP, TURN } from "./pubsub-msg";
 import horizontalIcon from "./assets/arrow-left-right-bold.svg";
 import verticalIcon from "./assets/arrow-up-down-bold.svg";
 import {
   handleOrientation,
   handleRandomize,
   handleSetupReset,
-  subscriptionPromise,
 } from "./event-handlers";
 import { createGrid } from "./grid";
 
@@ -17,20 +16,28 @@ let orientationHandler,
   confirmSetupHandler,
   confirmTransitionHandler;
 
-function displayGameSetting(players) {
+function displayGameSetting() {
   const gameSetting = document.querySelector("#game-setting");
   const confirmSetting = document.querySelector("#confirm-setting");
 
   gameSetting.showModal();
-  confirmSetting.addEventListener("click", async (event) => {
+  const confirmSettingHandler = (event) => {
     event.preventDefault();
     gameSetting.close();
     const opponentType = document.querySelector(
       "[name='opponent-type']:checked"
     );
     PubSub.publish(OPPONENT.TYPE, opponentType.value);
-    await subscriptionPromise;
-    displaySetup(players, players[0]);
+    confirmSetting.removeEventListener("click", confirmSettingHandler);
+  };
+  confirmSetting.addEventListener("click", confirmSettingHandler);
+}
+
+function displaySetup(_, playerArray) {
+  const players = playerArray[0];
+  const player = playerArray[1];
+
+  if (player === players[0]) {
     if (players[1].type === "computer") {
       setupToken = PubSub.subscribe(
         "setup",
@@ -39,10 +46,8 @@ function displayGameSetting(players) {
     } else {
       setupToken = PubSub.subscribe("setup", displayTransition);
     }
-  });
-}
+  }
 
-function displaySetup(players, player) {
   const gameSetup = document.querySelector("#game-setup");
   const playerName = document.querySelector("#player-name");
   const dock = document.querySelector("#dock");
@@ -122,7 +127,7 @@ function displayTransition(transitionType, playerArray) {
     transition.close();
     if (transitionType === "setup") {
       unsubscribeAll();
-      displaySetup(...playerArray);
+      displaySetup(CONFIG, playerArray);
     } else {
       const mainContainer = document.querySelector("#main-container");
       mainContainer.classList.remove("no-display");
@@ -130,6 +135,23 @@ function displayTransition(transitionType, playerArray) {
     }
   };
   confirmTransition.addEventListener("click", confirmTransitionHandler);
+}
+
+function displayRepeat(gameControl) {
+  const repeat = document.querySelector("#repeat");
+  const winText = document.querySelector("#repeat>p");
+  const confirmRepeat = document.querySelector("#confirm-repeat");
+
+  winText.textContent = `${gameControl.activePlayer.name} wins`;
+  repeat.showModal();
+  const confirmRepeatHandler = (event) => {
+    event.preventDefault();
+    repeat.close();
+    gameControl.reset();
+    displayGameSetting();
+    confirmRepeat.removeEventListener("click", confirmRepeatHandler);
+  };
+  confirmRepeat.addEventListener("click", confirmRepeatHandler);
 }
 
 function setupComplete(_, complete) {
@@ -163,4 +185,11 @@ function unsubscribeAll() {
   });
 }
 
-export { displayGameSetting, displayTransition, setupComplete, unsubscribeAll };
+export {
+  displayGameSetting,
+  displaySetup,
+  displayTransition,
+  displayRepeat,
+  setupComplete,
+  unsubscribeAll,
+};

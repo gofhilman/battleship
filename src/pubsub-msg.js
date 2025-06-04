@@ -17,3 +17,4 @@ export const DISPLAY = {
 
 export const TURN = "turn";
 export const MAIN = "main";
+export const CONFIG = "config";

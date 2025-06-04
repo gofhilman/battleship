@@ -1,5 +1,6 @@
 import Player from "./player";
-import { resolveSubscription } from "./event-handlers";
+import PubSub from "pubsub-js";
+import { CONFIG } from "./pubsub-msg";
 
 class GameControl {
   constructor() {
@@ -18,7 +19,7 @@ class GameControl {
     );
     this.activePlayer = this.players[0];
     this.opponent = this.players[1];
-    resolveSubscription();
+    PubSub.publish(CONFIG, [this.players, this.players[0]]);
   }
 
   switchActivePlayer() {
@@ -32,6 +33,12 @@ class GameControl {
     this.players.forEach((player) => {
       player.gameboard.ships.sort((a, b) => b.length - a.length);
     });
+  }
+
+  reset() {
+    this.players = [];
+    this.activePlayer = null;
+    this.opponent = null;   
   }
 }
 
