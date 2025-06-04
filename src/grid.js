@@ -34,6 +34,39 @@ function renderSetupGrid(_, grid) {
   }
 }
 
+function renderGrid(_, playerArray) {
+  const gridOne = document.querySelector("#grid-one");
+  const gridTwo = document.querySelector("#grid-two");
+  const grids = [gridOne, gridTwo];
+
+  for (let playerIter = 0; playerIter < 2; playerIter++) {
+    for (let gridIter = 0; gridIter < 100; gridIter++) {
+      const gridElement = grids[playerIter].querySelector(
+        `.grid-element:nth-child(${gridIter + 1})`
+      );
+
+      gridElement.classList.remove("yellow", "red");
+      const element =
+        playerArray[0][playerIter].gameboard.grid[Math.floor(gridIter / 10)][
+          gridIter % 10
+        ];
+      if (element.mark === "hit") gridElement.classList.add("red");
+      else if (element.mark === "miss") gridElement.classList.add("yellow");
+
+      grids[playerIter].classList.remove("unclickable");
+      gridElement.replaceChildren();
+      if (playerArray[0][playerIter] === playerArray[1]) {
+        grids[playerIter].classList.add("unclickable");
+        if (element.ship) {
+          const shipElement = document.createElement("div");
+          shipElement.classList.add("ship-element");
+          gridElement.appendChild(shipElement);
+        }
+      }
+    }
+  }
+}
+
 function renderStatus() {
   const statusOne = document.querySelector("#status-one");
   const statusTwo = document.querySelector("#status-two");
@@ -65,4 +98,10 @@ function renderStatus() {
   }
 }
 
-export { renderSetupGrid, createGrid, createStatusGrid, renderStatus };
+export {
+  renderSetupGrid,
+  createGrid,
+  createStatusGrid,
+  renderGrid,
+  renderStatus,
+};
