@@ -5,6 +5,7 @@ class GameControl {
   constructor() {
     this.players = [];
     this.activePlayer = null;
+    this.opponent = null;
   }
 
   createPlayers(_, opponentType) {
@@ -16,11 +17,14 @@ class GameControl {
       )
     );
     this.activePlayer = this.players[0];
+    this.opponent = this.players[1];
     resolveSubscription();
   }
 
   switchActivePlayer() {
     this.activePlayer =
+      this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
+    this.opponent = 
       this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
   }
 

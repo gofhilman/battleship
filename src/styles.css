@@ -214,10 +214,10 @@ input:focus {
 }
 
 .ship-element {
-  border: 3px solid var(--main-color);
+  border: 4px solid var(--main-color);
   width: 40px;
   height: 40px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .horizontal,
@@ -360,15 +360,15 @@ input:focus {
 }
 
 .green {
-  background-color: rgb(38, 115, 77);
+  background-color: rgba(38, 115, 76, 0.5);
 }
 
 .red {
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.5);
 }
 
 .yellow {
-  background-color: yellow;
+  background-color: rgba(255, 255, 0, 0.5);
 }
 
 footer {
