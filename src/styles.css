@@ -60,7 +60,6 @@ body {
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
-  height: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -200,7 +199,7 @@ input:focus {
 
 #dock {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(3, max-content);
   justify-items: center;
   align-items: center;
   gap: 20px;
@@ -248,7 +247,7 @@ input:focus {
 
 #setup-grid {
   display: grid;
-  grid-template-columns: repeat(10, auto);
+  grid-template-columns: repeat(10, max-content);
   grid-template-rows: repeat(10, max-content);
 }
 
@@ -258,21 +257,25 @@ input:focus {
   height: 40px;
 }
 
-#setup-reset, #randomize {
+#setup-reset,
+#randomize {
   justify-self: center;
   cursor: pointer;
 }
 
-#transition, #repeat {
-  width: 50%;
-  height: 30%;
+#transition,
+#repeat {
+  min-width: 910px;
+  min-height: 280px;
 }
 
-#transition h1, #repeat h1 {
+#transition h1,
+#repeat h1 {
   font-size: 2.5rem;
 }
 
-#transition p, #repeat p {
+#transition p,
+#repeat p {
   font-size: 2rem;
 }
 
@@ -288,15 +291,18 @@ input:focus {
   display: none;
 }
 
-#container-one, #container-two {
+#container-one,
+#container-two {
   display: grid;
   gap: 30px;
+  justify-items: center;
 }
 
-#grid-one, #grid-two {
+#grid-one,
+#grid-two {
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(10, auto);
+  grid-template-columns: repeat(10, max-content);
   grid-template-rows: repeat(10, max-content);
   padding: 20px;
   background-color: var(--bg-lighter-color);
@@ -309,19 +315,19 @@ input:focus {
 }
 
 .unclickable {
-    position: relative;
-    pointer-events: none;
+  position: relative;
+  pointer-events: none;
 }
 
 .unclickable::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: auto;
-    cursor: not-allowed;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  cursor: not-allowed;
 }
 
 .status-container {
@@ -342,7 +348,8 @@ input:focus {
   font-weight: 500;
 }
 
-#status-one, #status-two {
+#status-one,
+#status-two {
   display: grid;
   grid-auto-flow: column;
   gap: 15px;
@@ -375,5 +382,155 @@ input:focus {
 
 footer {
   padding: 3px 0;
+  margin-top: 20px;
   font-size: 0.9rem;
+}
+
+@media (max-width: 1200px) {
+  #main-container {
+    justify-content: center;
+  }
+
+  #transition,
+  #repeat {
+    min-width: 600px;
+    min-height: 250px;
+  }
+
+  #setup {
+    row-gap: 20px;
+    justify-items: center;
+  }
+
+  #dock,
+  #setup-grid {
+    grid-column: 1 / 3;
+  }
+}
+
+@media (max-width: 600px) {
+  header > img {
+    width: 40px;
+  }
+
+  header > p {
+    font-size: 1.5rem;
+  }
+
+  dialog h1 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .confirm-button {
+    font-size: 1rem;
+  }
+
+  #game-setting {
+    width: 280px;
+  }
+
+  #game-setup {
+    padding: 15px 30px;
+  }
+
+  #game-setup p {
+    font-size: 1.3rem;
+  }
+
+  #setup {
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  #dock {
+    gap: 10px;
+  }
+
+  #dock > div:first-child {
+    font-size: 1rem;
+  }
+
+  .ship-element {
+    border-width: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+  }
+
+  .horizontal,
+  .vertical {
+    width: 20px;
+    border-width: 1px;
+  }
+
+  .grid-element {
+    border-width: 0.5px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #setup-reset,
+  #randomize {
+    font-size: 0.8rem;
+  }
+
+  #transition,
+  #repeat {
+    min-width: 300px;
+    min-height: 150px;
+  }
+
+  #transition h1,
+  #repeat h1 {
+    font-size: 1.3rem;
+  }
+
+  #transition p,
+  #repeat p {
+    font-size: 1rem;
+  }
+
+  #main-container {
+    row-gap: 25px;
+  }
+
+  #container-one,
+  #container-two {
+    gap: 15px;
+  }
+
+  #grid-one,
+  #grid-two {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .status-container {
+    gap: 5px;
+    padding: 3px 10px 10px 10px;
+    border-radius: 8px;
+  }
+
+  .status-container > div:first-child {
+    font-size: 1rem;
+  }
+
+  #status-one,
+  #status-two {
+    gap: 8px;
+  }
+
+  .status-element {
+    width: 10px;
+    height: 20px;
+    border-width: 1px;
+    border-radius: 1px;
+  }
+
+  footer {
+    padding: 3px 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+  }
 }
