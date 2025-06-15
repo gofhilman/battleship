@@ -4,12 +4,14 @@ import Ship from "./ship";
 import PubSub from "pubsub-js";
 
 let moveHandler, placingHandler;
+const dock = document.querySelector("#dock");
 
 function handleOrientation(event, player) {
   if (
     event.target.classList.contains("horizontal") ||
     event.target.classList.contains("vertical")
   ) {
+    dock.classList.add("unclickable");
     let clonedShip, shipOrientation;
     event.target.classList.add("hidden");
     if (event.target.classList.contains("horizontal")) {
@@ -86,6 +88,7 @@ function handlePlacing(event, movingElement, parent, shipOrientation, player) {
       movingElement.remove();
       parent.removeEventListener("mousemove", moveHandler);
       parent.removeEventListener("click", placingHandler);
+      dock.classList.remove("unclickable");
     }
   }
 }

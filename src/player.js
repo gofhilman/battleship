@@ -37,7 +37,6 @@ class Player {
         shipIter++;
       }
     }
-    console.log(this.gameboard.grid); // Test
   }
 
   attack(opponentBoard, coordinate) {
@@ -64,7 +63,6 @@ class Player {
     } else if (this.memory.hitOrientation) {
       this.attackWithBFS(opponentBoard);
     }
-    console.log(this.memory); // Test
   }
 
   attackRandomlyAndRemember(opponentBoard) {
@@ -189,7 +187,6 @@ class Player {
 
   placeShipPubSub(_, shipState) {
     this.gameboard.placeShip(...shipState);
-    console.log(this.gameboard.grid); // Test
     PubSub.publish(GAMEBOARD.GRID, this.gameboard.grid);
   }
 

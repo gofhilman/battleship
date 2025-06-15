@@ -51,7 +51,7 @@ grids.forEach((grid) => {
           coordinate
         );
         PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
-        await delay(1000);
+        await delay(500);
         if (gameControl.opponent.gameboard.isGameOver()) {
           displayRepeat(gameControl);
           PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
@@ -62,7 +62,7 @@ grids.forEach((grid) => {
               gameControl.opponent.gameboard
             );
             if (gameControl.opponent.gameboard.isGameOver()) {
-              await delay(1000);
+              await delay(500);
               displayRepeat(gameControl);
             }
             gameControl.switchActivePlayer();
