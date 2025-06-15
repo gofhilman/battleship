@@ -1,8 +1,21 @@
 import PubSub from "pubsub-js";
-import { DISPLAY, GAMEBOARD, SHIP, OPPONENT, TURN, MAIN, CONFIG } from "./pubsub-msg";
+import {
+  DISPLAY,
+  GAMEBOARD,
+  SHIP,
+  OPPONENT,
+  TURN,
+  MAIN,
+  CONFIG,
+} from "./pubsub-msg";
 import { startMain } from "./game-main";
 import { renderGrid, renderSetupGrid, renderStatus } from "./grid";
-import { displayRepeat, displaySetup, displayTransition, setupComplete } from "./dialogs";
+import {
+  displayRepeat,
+  displaySetup,
+  displayTransition,
+  setupComplete,
+} from "./dialogs";
 import gameControl from "./game-control";
 
 PubSub.subscribe(DISPLAY.MAIN, startMain);
@@ -18,7 +31,7 @@ const gridOne = document.querySelector("#grid-one");
 const gridTwo = document.querySelector("#grid-two");
 const grids = [gridOne, gridTwo];
 grids.forEach((grid) => {
-  grid.addEventListener("click", (event) => {
+  grid.addEventListener("click", async (event) => {
     if (event.target.classList.contains("grid-element")) {
       const gridElementNumber = Array.from(
         event.target.parentElement.children
@@ -37,16 +50,19 @@ grids.forEach((grid) => {
           gameControl.opponent.gameboard,
           coordinate
         );
+        PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
+        await delay(1000);
         if (gameControl.opponent.gameboard.isGameOver()) {
           displayRepeat(gameControl);
           PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
         } else {
           gameControl.switchActivePlayer();
           if (gameControl.activePlayer.type === "computer") {
-            gameControl.activePlayer.attackRandomly(
+            gameControl.activePlayer.attackIntelligently(
               gameControl.opponent.gameboard
             );
             if (gameControl.opponent.gameboard.isGameOver()) {
+              await delay(1000);
               displayRepeat(gameControl);
             }
             gameControl.switchActivePlayer();
@@ -67,3 +83,7 @@ grids.forEach((grid) => {
     }
   });
 });
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
