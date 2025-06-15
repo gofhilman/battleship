@@ -51,10 +51,10 @@ grids.forEach((grid) => {
           coordinate
         );
         PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
+        setTimeout(preventClick, 10);
         await delay(500);
         if (gameControl.opponent.gameboard.isGameOver()) {
           displayRepeat(gameControl);
-          PubSub.publish(TURN, [gameControl.players, gameControl.activePlayer]);
         } else {
           gameControl.switchActivePlayer();
           if (gameControl.activePlayer.type === "computer") {
@@ -90,4 +90,11 @@ grids.forEach((grid) => {
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function preventClick() {
+  const gridOne = document.querySelector("#grid-one");
+  const gridTwo = document.querySelector("#grid-two");
+  const grids = [gridOne, gridTwo];
+  grids.forEach((grid) => grid.classList.add("unclickable"));
 }
