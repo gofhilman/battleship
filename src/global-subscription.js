@@ -73,6 +73,10 @@ grids.forEach((grid) => {
           } else {
             const mainContainer = document.querySelector("#main-container");
             mainContainer.classList.add("no-display");
+            PubSub.publish(TURN, [
+              gameControl.players,
+              gameControl.activePlayer,
+            ]);
             PubSub.publish(MAIN, [
               gameControl.players,
               gameControl.activePlayer,

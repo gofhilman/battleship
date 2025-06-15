@@ -1,5 +1,5 @@
 import PubSub from "pubsub-js";
-import { CONFIG, DISPLAY, GAMEBOARD, OPPONENT, SHIP, TURN } from "./pubsub-msg";
+import { CONFIG, DISPLAY, GAMEBOARD, OPPONENT, SHIP } from "./pubsub-msg";
 import horizontalIcon from "./assets/arrow-left-right-bold.svg";
 import verticalIcon from "./assets/arrow-up-down-bold.svg";
 import {
@@ -131,7 +131,6 @@ function displayTransition(transitionType, playerArray) {
     } else {
       const mainContainer = document.querySelector("#main-container");
       mainContainer.classList.remove("no-display");
-      PubSub.publish(TURN, playerArray);
     }
   };
   confirmTransition.addEventListener("click", confirmTransitionHandler);
